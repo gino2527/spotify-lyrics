@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "/spotify-lyrics/static/css/main.40fa9e45.chunk.css"
   },
   {
-    "revision": "d3be8bf8bf0ddfe0b7e3597dda1133b5",
+    "revision": "e8f452cfdba9f02c69bef3f798f16c78",
     "url": "/spotify-lyrics/index.html"
   }
 ];
