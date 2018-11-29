@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
@@ -19,9 +18,10 @@ class App extends Component {
         axios.get('https://api.spotify.com/v1/me/player/currently-playing', {
           headers: {
             Authorization: 'Bearer ' + localStorage.getItem('accessToken')
-          }
+          },
         })
         .then(res => {
+          // res.header("Access-Control-Allow-Origin", "*");
           let { title, artist } = this.state;
           if ( title !== res.data.item.name || artist !== res.data.item.artists[0].name ) {
             this.setState({
@@ -30,13 +30,16 @@ class App extends Component {
               artist: res.data.item.artists[0].name,
               show: false
             }, () => {
-              axios.get('https://api.musixmatch.com/ws/1.1/matcher.lyrics.get', {
+              axios.get('https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/matcher.lyrics.get', {
                 params: {
                   format: 'json',
                   callback: 'jsonp',
                   q_track: this.state.title,
                   q_artist: this.state.artist,
                   apikey: '81122af4e7182c602b1b83dda353e355'
+                },
+                headers: {
+                  crossDomain: true
                 }
               })
                 .then(res => {
@@ -59,15 +62,15 @@ class App extends Component {
             }
           }
         })
-      }, 2500)
+      }, 1500)
     } else {
       if (window.location.href.split('/#')[1]) {
         let token = window.location.href.split('/#')[1].split('&')[0].split('=')[1];
         window.localStorage.setItem('accessToken', token);
-        window.location.href = '/';
+        window.location.href = '/spotify-lyrics/';
       } else {
         if (window.confirm('Connect with Spotify') === true) {
-          window.location.href = 'https://accounts.spotify.com/authorize?client_id=97f6ad504c9243aa8b8a22cd70e1b7c8&scope=user-read-currently-playing&redirect_uri=https://gino2527.github.io/spotify-lyrics&response_type=token'
+          window.location.href = 'https://accounts.spotify.com/authorize?client_id=97f6ad504c9243aa8b8a22cd70e1b7c8&scope=user-read-currently-playing&redirect_uri=https://gino2527.github.io/spotify-lyrics/&response_type=token'
         }
       }
     }
