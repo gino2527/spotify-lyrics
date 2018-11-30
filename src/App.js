@@ -8,7 +8,8 @@ class App extends Component {
     
     this.state = {
       item: {},
-      lyrics: ''
+      lyrics: '',
+      show: true
     }
   }
   
@@ -21,14 +22,13 @@ class App extends Component {
           },
         })
         .then(res => {
-          // res.header("Access-Control-Allow-Origin", "*");
           let { title, artist } = this.state;
           if ( title !== res.data.item.name || artist !== res.data.item.artists[0].name ) {
             this.setState({
               item: res.data.item,
               title: res.data.item.name,
               artist: res.data.item.artists[0].name,
-              show: false
+              lyrics: ''
             }, () => {
               axios.get('https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/matcher.lyrics.get', {
                 params: {
@@ -37,17 +37,12 @@ class App extends Component {
                   q_track: this.state.title,
                   q_artist: this.state.artist,
                   apikey: '81122af4e7182c602b1b83dda353e355'
-                },
-                headers: {
-                  crossDomain: true
                 }
               })
                 .then(res => {
                   this.setState({
-                    show: true
-                  }, () => {
-                    document.getElementById('lyrics').innerHTML = res.data.message.body.lyrics.lyrics_body.replace(/(?:\r\n|\r|\n)/g, '<br>');
-                  })                
+                    lyrics: res.data.message.body.lyrics.lyrics_body
+                  })
                 })
             })
           }
@@ -67,7 +62,7 @@ class App extends Component {
       if (window.location.href.split('/#')[1]) {
         let token = window.location.href.split('/#')[1].split('&')[0].split('=')[1];
         window.localStorage.setItem('accessToken', token);
-        window.location.href = '/spotify-lyrics/';
+        window.location.href = '/spotify-lyrics';
       } else {
         if (window.confirm('Connect with Spotify') === true) {
           window.location.href = 'https://accounts.spotify.com/authorize?client_id=97f6ad504c9243aa8b8a22cd70e1b7c8&scope=user-read-currently-playing&redirect_uri=https://gino2527.github.io/spotify-lyrics/&response_type=token'
@@ -77,17 +72,28 @@ class App extends Component {
   }
 
   render() {
+    let { artist, lyrics, show, title } = this.state;
     return (
       <div className="App">
         <header className="App-header">
           {
-            this.state.show &&
+            show &&
               <>
-                <p style={{fontSize: '24px', margin: 0, fontWeight: 'bold'}}>{this.state.title}</p>
-                <p style={{fontSize: '20px', margin: 0}}>{this.state.artist}</p>
-                <p id='lyrics' style={{fontSize: '16px'}}></p>
+                <p id='title'>{title}</p>
+                <p id='artist'>{artist}</p>
+                {
+                  lyrics.length > 0 ?
+                    <p className='lyrics'>
+                      {lyrics}
+                    </p> :
+                    <p id='fetching' className='lyrics'>
+                    {
+                      title && artist && 'Fetching lyrics...'
+                    }                      
+                    </p>
+                }
               </>
-          }          
+          }
         </header>
       </div>
     );
