@@ -30,19 +30,35 @@ class App extends Component {
               artist: res.data.item.artists[0].name,
               lyrics: ''
             }, () => {
-              axios.get('https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/matcher.lyrics.get', {
+              axios.get(`https://orion.apiseeds.com/api/music/lyric/${this.state.artist}/${this.state.title}`, {
                 params: {
-                  format: 'json',
-                  callback: 'jsonp',
-                  q_track: this.state.title,
-                  q_artist: this.state.artist,
-                  apikey: '81122af4e7182c602b1b83dda353e355'
+                  apikey: 'oTpztYN2vcpQj7ytLawsK85q2DQX0nA9QFWBGNebaFdFooQmseyype52PRVNQZ0e'
                 }
               })
                 .then(res => {
                   this.setState({
-                    lyrics: res.data.message.body.lyrics.lyrics_body
+                    lyrics: res.data.result.track.text
                   })
+                })
+                .catch(err => {
+                  if (err.response) {
+                    if (err.response.status === 404) {
+                      axios.get('https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/matcher.lyrics.get', {
+                        params: {
+                          format: 'json',
+                          callback: 'jsonp',
+                          q_track: this.state.title,
+                          q_artist: this.state.artist,
+                          apikey: '81122af4e7182c602b1b83dda353e355'
+                        }
+                      })
+                        .then(res => {
+                          this.setState({
+                            lyrics: res.data.message.body.lyrics.lyrics_body
+                          })
+                        })
+                    }
+                  }
                 })
             })
           }
