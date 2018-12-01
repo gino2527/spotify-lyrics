@@ -1,13 +1,13 @@
 {
   "main.css": "/spotify-lyrics/static/css/main.5fe325dc.chunk.css",
-  "main.js": "/spotify-lyrics/static/js/main.71a2a788.chunk.js",
-  "main.js.map": "/spotify-lyrics/static/js/main.71a2a788.chunk.js.map",
-  "static/js/1.9a5fbb81.chunk.js": "/spotify-lyrics/static/js/1.9a5fbb81.chunk.js",
-  "static/js/1.9a5fbb81.chunk.js.map": "/spotify-lyrics/static/js/1.9a5fbb81.chunk.js.map",
+  "main.js": "/spotify-lyrics/static/js/main.0a6b7d09.chunk.js",
+  "main.js.map": "/spotify-lyrics/static/js/main.0a6b7d09.chunk.js.map",
+  "static/js/1.79b71e36.chunk.js": "/spotify-lyrics/static/js/1.79b71e36.chunk.js",
+  "static/js/1.79b71e36.chunk.js.map": "/spotify-lyrics/static/js/1.79b71e36.chunk.js.map",
   "runtime~main.js": "/spotify-lyrics/static/js/runtime~main.4324f00e.js",
   "runtime~main.js.map": "/spotify-lyrics/static/js/runtime~main.4324f00e.js.map",
   "static/css/main.5fe325dc.chunk.css.map": "/spotify-lyrics/static/css/main.5fe325dc.chunk.css.map",
   "index.html": "/spotify-lyrics/index.html",
-  "precache-manifest.e1c05cd1212d3f5be54c8fce57077ad6.js": "/spotify-lyrics/precache-manifest.e1c05cd1212d3f5be54c8fce57077ad6.js",
+  "precache-manifest.785ac54cee0d98c06540ac6c7bff8c56.js": "/spotify-lyrics/precache-manifest.785ac54cee0d98c06540ac6c7bff8c56.js",
   "service-worker.js": "/spotify-lyrics/service-worker.js"
 }
