@@ -36,28 +36,30 @@ class App extends Component {
                 }
               })
                 .then(res => {
-                  this.setState({
-                    lyrics: res.data.result.track.text
-                  })
+                  if (res.data.result.artist.name.toLowerCase() !== this.state.artist.toLowerCase()) {
+                    throw 'err';
+                  } else {
+                    this.setState({
+                      lyrics: res.data.result.track.text
+                    })
+                  }
                 })
                 .catch(err => {
-                  if (err.response) {
-                    if (err.response.status === 404) {
-                      axios.get('https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/matcher.lyrics.get', {
-                        params: {
-                          format: 'json',
-                          callback: 'jsonp',
-                          q_track: this.state.title,
-                          q_artist: this.state.artist,
-                          apikey: '81122af4e7182c602b1b83dda353e355'
-                        }
-                      })
-                        .then(res => {
-                          this.setState({
-                            lyrics: res.data.message.body.lyrics.lyrics_body
-                          })
+                  if ((err.response && err.response.status === 404) || err === 'err') {
+                    axios.get('https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/matcher.lyrics.get', {
+                      params: {
+                        format: 'json',
+                        callback: 'jsonp',
+                        q_track: this.state.title,
+                        q_artist: this.state.artist,
+                        apikey: '81122af4e7182c602b1b83dda353e355'
+                      }
+                    })
+                      .then(res => {
+                        this.setState({
+                          lyrics: res.data.message.body.lyrics.lyrics_body
                         })
-                    }
+                      })
                   }
                 })
             })
@@ -68,7 +70,8 @@ class App extends Component {
             if (err.response.status === 401) {
               window.localStorage.removeItem('accessToken')
               if (window.confirm('Token expired. Please reconnect with Spotify') === true) {
-                window.location.href = 'https://accounts.spotify.com/authorize?client_id=97f6ad504c9243aa8b8a22cd70e1b7c8&scope=user-read-currently-playing&redirect_uri=https://gino2527.github.io/spotify-lyrics/&response_type=token'
+                // window.location.href = 'https://accounts.spotify.com/authorize?client_id=97f6ad504c9243aa8b8a22cd70e1b7c8&scope=user-read-currently-playing&redirect_uri=https://gino2527.github.io/spotify-lyrics/&response_type=token'
+                window.location.href = 'https://accounts.spotify.com/authorize?client_id=97f6ad504c9243aa8b8a22cd70e1b7c8&scope=user-read-currently-playing&redirect_uri=http://localhost:3000&response_type=token'
               }
             }
           }
@@ -78,10 +81,11 @@ class App extends Component {
       if (window.location.href.split('/#')[1]) {
         let token = window.location.href.split('/#')[1].split('&')[0].split('=')[1];
         window.localStorage.setItem('accessToken', token);
-        window.location.href = '/spotify-lyrics';
+        window.location.href = '/';
       } else {
         if (window.confirm('Connect with Spotify') === true) {
-          window.location.href = 'https://accounts.spotify.com/authorize?client_id=97f6ad504c9243aa8b8a22cd70e1b7c8&scope=user-read-currently-playing&redirect_uri=https://gino2527.github.io/spotify-lyrics/&response_type=token'
+          // window.location.href = 'https://accounts.spotify.com/authorize?client_id=97f6ad504c9243aa8b8a22cd70e1b7c8&scope=user-read-currently-playing&redirect_uri=https://gino2527.github.io/spotify-lyrics/&response_type=token'
+          window.location.href = 'https://accounts.spotify.com/authorize?client_id=97f6ad504c9243aa8b8a22cd70e1b7c8&scope=user-read-currently-playing&redirect_uri=http://localhost:3000&response_type=token'
         }
       }
     }
